@@ -1,0 +1,19 @@
+{
+  "name": "lucky-games-and-grill",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Lucky Games & Grill — gaming lounge billing and management (Node.js + React + MongoDB)",
+  "scripts": {
+    "setup": "npm install && npm --prefix server install && npm --prefix client install",
+    "seed": "npm --prefix server run seed --",
+    "dev": "concurrently -n api,web -c yellow,red \"npm --prefix server run dev\" \"npm --prefix client run dev\"",
+    "build": "npm --prefix client run build",
+    "start": "npm --prefix server start"
+  },
+  "devDependencies": {
+    "concurrently": "9.1.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

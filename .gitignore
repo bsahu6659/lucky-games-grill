@@ -1,0 +1,12 @@
+node_modules/
+client/dist/
+.env
+*.log
+.DS_Store
+.claude/
+
+# reference material kept on this PC only — not part of the app
+*.pdf
+*.docx
+WhatsApp Image*
+gamebiller-demo.html
