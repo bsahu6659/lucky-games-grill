@@ -36,7 +36,7 @@ export default function Bookings() {
         <Seg value={mode} onChange={setMode} options={[['day', 'By day'], ['upcoming', 'All upcoming']]} />
         {mode === 'day' && <>
           <button className="btn btn-sm" onClick={() => shift(-1)}>‹</button>
-          <input type="date" className="input" style={{ width: 170 }} value={date} onChange={(e) => setDate(e.target.value)} />
+          <input type="date" className="input fit" value={date} onChange={(e) => setDate(e.target.value)} />
           <button className="btn btn-sm" onClick={() => shift(1)}>›</button>
           <button className="btn btn-sm btn-ghost" onClick={() => setDate(todayKey())}>Today</button>
         </>}

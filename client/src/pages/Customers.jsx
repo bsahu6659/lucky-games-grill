@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Users, UserPlus, WalletCards, Gift, Phone, Pencil, Download } from 'lucide-react';
+import { Users, UserPlus, WalletCards, Gift, Phone, Pencil, Download, IndianRupee, Repeat, Clock3 } from 'lucide-react';
 import { get, post, put } from '../api.js';
 import { useAuth, useFetch, useToast } from '../state.jsx';
-import { PageHead, SearchBox, Seg, Spinner, Empty, Modal, Field, inr, fDate, fDateTime, useDebounced, downloadCSV, MODE_LABEL } from '../ui.jsx';
+import { PageHead, SearchBox, Seg, Spinner, Empty, Modal, Field, KpiGrid, Kpi, inr, fDate, fDateTime, useDebounced, downloadCSV, MODE_LABEL } from '../ui.jsx';
 import { InvoiceModal } from '../components/Billing.jsx';
 
 export default function Customers() {
@@ -26,7 +26,7 @@ export default function Customers() {
       <div className="row wrap mb12" style={{ gap: 10 }}>
         <SearchBox value={q} onChange={setQ} placeholder="Search name or phone" style={{ flex: 1, minWidth: 220 }} />
         <Seg value={filter} onChange={setFilter} options={[['', 'All'], ['credit', 'Owes money'], ['wallet', 'Has wallet']]} />
-        <select className="input" style={{ width: 170 }} value={sort} onChange={(e) => setSort(e.target.value)}>
+        <select className="input fit" value={sort} onChange={(e) => setSort(e.target.value)}>
           <option value="recent">Recent visit</option><option value="spend">Top spenders</option><option value="visits">Most visits</option><option value="name">Name A–Z</option>
         </select>
       </div>
@@ -114,13 +114,13 @@ export function CustomerModal({ id, onClose }) {
             </div>
           )}
           {c.note && !edit && <div className="small mute">Note: {c.note}</div>}
-          <div className="stats">
-            <div className="stat"><div className="k">Visits</div><div className="v">{c.visits}</div></div>
-            <div className="stat"><div className="k">Total spent</div><div className="v">{inr(c.totalSpent)}</div></div>
-            <div className="stat hl"><div className="k"><WalletCards size={14} />Wallet</div><div className="v">{inr(c.walletBalance)}</div>{c.walletExpiresAt && <div className="tiny mute">till {fDate(c.walletExpiresAt)}</div>}</div>
-            <div className="stat"><div className="k"><Gift size={14} />Points</div><div className="v">{c.loyaltyPoints || 0}</div></div>
-            <div className="stat"><div className="k">Credit due</div><div className="v" style={{ color: c.creditDue > 0 ? 'var(--bad)' : undefined }}>{inr(c.creditDue)}</div></div>
-          </div>
+          <KpiGrid cols={5}>
+            <Kpi hl icon={IndianRupee} label="Total spent" value={inr(c.totalSpent)} sub={`Last visit ${fDate(c.lastVisitAt)}`} />
+            <Kpi icon={Repeat} label="Visits" value={c.visits} />
+            <Kpi icon={WalletCards} label="Wallet" tone={c.walletBalance > 0 ? 'brand' : ''} value={inr(c.walletBalance)} sub={c.walletExpiresAt ? `till ${fDate(c.walletExpiresAt)}` : undefined} />
+            <Kpi icon={Gift} label="Points" value={c.loyaltyPoints || 0} />
+            <Kpi icon={Clock3} label="Credit due" tone={c.creditDue > 0 ? 'bad' : ''} value={inr(c.creditDue)} />
+          </KpiGrid>
           {can('memberships') && plans.length > 0 && (
             <div className="card" style={{ background: 'var(--bg2)' }}>
               <h3 className="mb8">Recharge wallet</h3>

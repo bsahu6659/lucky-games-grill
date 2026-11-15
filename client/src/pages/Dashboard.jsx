@@ -126,7 +126,7 @@ export default function Dashboard() {
         }}><RotateCcw />Reset All</button>}
         <span className="sp" />
         {lowStock.length > 0 && <span className="badge warn" title={lowStock.map((s) => `${s.name}: ${s.stock}`).join(', ')}><AlertTriangle />{lowStock.length} item(s) low stock</span>}
-        <Link to="/help" className="btn btn-ghost btn-sm"><LifeBuoy />Help</Link>
+        <Link to="/help" className="btn btn-ghost btn-sm help-link"><LifeBuoy />Help</Link>
       </div>
 
       <div className="filters">

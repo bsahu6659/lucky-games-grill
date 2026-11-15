@@ -35,7 +35,7 @@ export default function Invoices() {
         <button className="btn" onClick={exportCsv} disabled={!list.length}><Download />Excel (CSV)</button>
       </PageHead>
       <div className="row wrap mb12" style={{ gap: 10 }}>
-        <input type="date" className="input" style={{ width: 170 }} value={date} onChange={(e) => setDate(e.target.value)} disabled={!!q} />
+        <input type="date" className="input fit" value={date} onChange={(e) => setDate(e.target.value)} disabled={!!q} />
         <Seg value={status} onChange={setStatus} options={[['', 'All'], ['paid', 'Paid'], ['pending', 'Pending'], ['cancelled', 'Cancelled']]} />
         <SearchBox value={q} onChange={setQ} placeholder="Invoice no, name or phone (all dates)" style={{ flex: 1, minWidth: 220 }} />
       </div>

@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { Wallet, Plus, Trash2, Pencil, TrendingDown, TrendingUp } from 'lucide-react';
+import { Wallet, Plus, Trash2, Pencil, TrendingDown, TrendingUp, Scale } from 'lucide-react';
 import { post, put, del } from '../api.js';
 import { useFetch, useToast } from '../state.jsx';
-import { PageHead, Spinner, Empty, Modal, Field, Seg, useConfirm, inr, todayKey, dayLabel } from '../ui.jsx';
+import { PageHead, Spinner, Empty, Modal, Field, Seg, KpiGrid, Kpi, useConfirm, inr, todayKey, dayLabel } from '../ui.jsx';
 
 const CATS = { expense: ['Rent', 'Electricity', 'Internet', 'Salary', 'Snacks stock', 'Grill supplies', 'Repairs', 'Games / subscriptions', 'Marketing', 'Tournament prize', 'Other'], income: ['Tournament entry', 'Repair service', 'Accessory sale', 'Event / party booking', 'Other'] };
 
@@ -22,15 +22,15 @@ export default function Expenses() {
   return (
     <>
       <PageHead title="Expenses & Income" sub="Rent, salaries, stock — and income that isn't a bill (repairs, events). Used for net profit in reports.">
-        <input type="month" className="input" style={{ width: 160 }} value={month} onChange={(e) => setMonth(e.target.value)} />
+        <input type="month" className="input fit" value={month} onChange={(e) => setMonth(e.target.value)} />
         <button className="btn" onClick={() => setEdit({ kind: 'income', date: todayKey(), category: 'Other', mode: 'cash' })}><TrendingUp />Add income</button>
         <button className="btn btn-primary" onClick={() => setEdit({ kind: 'expense', date: todayKey(), category: 'Other', mode: 'cash' })}><Plus />Add expense</button>
       </PageHead>
-      <div className="stats mb16">
-        <div className="stat"><div className="k"><TrendingDown size={14} />Expenses</div><div className="v" style={{ color: 'var(--bad)' }}>{inr(exp)}</div></div>
-        <div className="stat"><div className="k"><TrendingUp size={14} />Other income</div><div className="v" style={{ color: 'var(--ok)' }}>{inr(inc)}</div></div>
-        <div className="stat hl"><div className="k">Entries</div><div className="v">{list.length}</div></div>
-      </div>
+      <KpiGrid cols={3} className="mb16">
+        <Kpi hl icon={Scale} label="Income − Expenses" tone={inc - exp < 0 ? 'bad' : inc - exp > 0 ? 'good' : ''} value={inr(inc - exp)} sub={`${list.length} entries this month`} />
+        <Kpi icon={TrendingDown} label="Expenses" tone={exp ? 'bad' : ''} value={inr(exp)} />
+        <Kpi icon={TrendingUp} label="Other income" tone={inc ? 'good' : ''} value={inr(inc)} />
+      </KpiGrid>
       <div className="card card-pad0">
         {loading && !data ? <Spinner center /> : !list.length ? <Empty icon={Wallet} title="Nothing recorded this month" /> : (
           <div className="tbl-wrap"><table className="tbl">

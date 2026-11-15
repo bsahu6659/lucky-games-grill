@@ -29,6 +29,19 @@ export function PageHead({ title, sub, children }) {
     </div>
   );
 }
+/** KPI grid: `cols` on wide screens, reflows to 3 / 2 columns by its own width (no orphan cards). */
+export const KpiGrid = ({ cols = 4, children, className = '' }) => <div className={`kpis ${className}`}><div className={`kpi-grid c${cols}`}>{children}</div></div>;
+export function Kpi({ label, value, sub, icon: I, tone, hl, lg, title, children }) {
+  return (
+    <div className={`kpi${hl ? ' hl' : ''}${lg ? ' lg' : ''}${tone ? ` ${tone}` : ''}`} title={title || (typeof label === 'string' ? label : undefined)}>
+      <div className="k">{I && <span className="ic"><I /></span>}<span className="lbl">{label}</span></div>
+      <div className="v">{value}</div>
+      {sub && <div className="s" title={typeof sub === 'string' ? sub : undefined}>{sub}</div>}
+      {children}
+    </div>
+  );
+}
+
 export const Empty = ({ icon: I = Inbox, title, children }) => (
   <div className="empty"><I /><div className="b" style={{ color: 'var(--ink)' }}>{title}</div>{children && <div className="small mt8">{children}</div>}</div>
 );
